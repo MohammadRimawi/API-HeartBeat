@@ -55,12 +55,6 @@ class MainActivity : AppCompatActivity() {
         Server.pingAll()
 
     }
-    interface Api{
-        @GET("/{endpoint}")
-        fun get(@Path("endpoint") endpoint : String ): Call<ResponseBody>;
 
-        @POST("/{endpoint}")
-        fun post(@Path("endpoint") endpoint : String ): Call<ResponseBody>;
-    }
 
 }
