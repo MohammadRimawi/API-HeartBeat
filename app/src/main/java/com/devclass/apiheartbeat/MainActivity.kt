@@ -1,5 +1,10 @@
 package com.devclass.apiheartbeat
 
+import android.annotation.SuppressLint
+import android.app.Application
+import android.content.ContentResolver
+import android.content.ContentValues
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -8,9 +13,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
+import android.view.View
 import okhttp3.ResponseBody
 import retrofit2.*
 import retrofit2.http.GET
@@ -19,47 +22,37 @@ import retrofit2.http.Path
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
+    companion object{
+        lateinit var Resolver :ContentResolver ;
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Resolver = contentResolver;
 
-        // create a list of server objects, specifying all required attributes to every server.
 
-        var servers = arrayOf<Server>(
-                Server(name = "My CV", schema = "http",url = "rimawi.me",method = "GET"),
-                Server(name = "My CV secure", schema = "https",url = "rimawi.me",method = "GET"),
-                Server(name = "Varla", schema = "http",url = "rimawi.me",port = "5050",endpoint = "/api/get/pinned_todos",method = "POST")
-            );
 
-        for (server in servers) {
-            try {
-                val retro: Retrofit = Retrofit.Builder().baseUrl(server.BaseUrl()).build();
-                val api: Api = retro.create();
-                when(server.method){
-                    "GET" -> api.get(server.endpoint).enqueue(object : Callback<ResponseBody> {
-                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                println(server.route() + " Was not sent ")
-                                t.printStackTrace()
-                            }
-                            override fun onResponse(call: Call<ResponseBody>,response: Response<ResponseBody>) {
-                                println(response.code().toString() + " - " + server.route() )
-                            }
-                        });
-                    "POST" -> api.post(server.endpoint).enqueue(object : Callback<ResponseBody> {
-                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            println(server.route() + " Was not sent ")
-                            t.printStackTrace()
-                        }
-                        override fun onResponse(call: Call<ResponseBody>,response: Response<ResponseBody>) {
-                            println(response.code().toString() + " - " + server.route() )
-                        }
-                    });
-                }
-            }
-            catch(e:Exception){
-                e.printStackTrace()
-            }
+
+
+        fun addServer(){
+
+            val values = ContentValues()
+
+            values.put(SQLite.NAME, "Varla");
+            values.put(SQLite.URL, "rimawi.me");
+            values.put(SQLite.SCEHMA, "http");
+            values.put(SQLite.PORT, "5050");
+            values.put(SQLite.ENDPOINT, "/api/get/pinned_todos");
+            values.put(SQLite.METHOD, "post");
+
+            val uri = contentResolver.insert(
+                SQLite.CONTENT_URL, values
+            )
         }
+
+
+
+        Server.pingAll()
 
     }
     interface Api{
@@ -68,19 +61,6 @@ class MainActivity : AppCompatActivity() {
 
         @POST("/{endpoint}")
         fun post(@Path("endpoint") endpoint : String ): Call<ResponseBody>;
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.top_bar_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.sync_all){
-            Toast.makeText(this, "Syncing all servers", Toast.LENGTH_SHORT).show()
-        }
-        return super.onOptionsItemSelected(item)
     }
 
 }
