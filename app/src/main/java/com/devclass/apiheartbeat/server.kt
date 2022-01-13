@@ -16,6 +16,7 @@ import retrofit2.http.Path
 class Server(name:String,schema : String, url : String,port:String = "",endpoint:String = "",method:String = "GET") {
 
     companion object{
+
             fun retrieveServers(id:Int = 0): Array<Server>{
 
 
@@ -45,35 +46,39 @@ class Server(name:String,schema : String, url : String,port:String = "",endpoint
             val servers = retrieveServers();
             for (server in servers) {
                 try {
-                    val retro: Retrofit = Retrofit.Builder().baseUrl(server.BaseUrl()).build();
-                    val api: Api = retro.create();
-                    when(server.method){
-                        "GET" -> api.get(server.endpoint).enqueue(object : Callback<ResponseBody> {
-                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                println(server.route() + " Was not sent ")
-                                t.printStackTrace()
-                            }
-                            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                                println(response.code().toString() + " - " + server.route() )
-                            }
-                        });
-                        "POST" -> api.post(server.endpoint).enqueue(object :
-                            Callback<ResponseBody> {
-                            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                println(server.route() + " Was not sent ")
-                                t.printStackTrace()
-                            }
-                            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                                println(response.code().toString() + " - " + server.route() )
-                            }
-                        });
-                    }
+                    pingOne(server);
                 }
                 catch(e: Exception){
-                    e.printStackTrace()
+                    println(server.route() + " Was not sent ")
                 }
             }
 
+        }
+        private fun pingOne(server:Server){
+            val retro: Retrofit = Retrofit.Builder().baseUrl(server.BaseUrl()).build();
+            val api: Api = retro.create();
+            when(server.method){
+                "GET" -> api.get(server.endpoint).enqueue(object : Callback<ResponseBody> {
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+
+//                        t.printStackTrace()
+                        throw(t);
+                    }
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        println(response.code().toString() + " - " + server.route() )
+                    }
+                });
+                "POST" -> api.post(server.endpoint).enqueue(object :
+                    Callback<ResponseBody> {
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        println(server.route() + " Was not sent ")
+                        t.printStackTrace()
+                    }
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        println(response.code().toString() + " - " + server.route() )
+                    }
+                });
+            }
         }
     }
     public val name = name;
