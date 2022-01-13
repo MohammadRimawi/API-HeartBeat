@@ -13,7 +13,7 @@ class SQLite:ContentProvider() {
     companion object{
 
         val PROVIDER_NAME = "com.devclass.apiheartbeat.SQLite";
-        val prov_URL = "content://"+ PROVIDER_NAME + "/servers";
+        val prov_URL = "content://"+ PROVIDER_NAME + "/";
         val CONTENT_URL = Uri.parse(prov_URL);
 
         val _ID = "_id";
@@ -29,7 +29,6 @@ class SQLite:ContentProvider() {
         val SERVERS = 1;
         val SERVER_ID = 2;
 
-        val uriMatcher : UriMatcher? = null;
         val DATABASE_NAME = "heartbeat";
         val SERVERS_TABLE_NAME = "servers";
         val DATABASE_VERSION = 1;
@@ -41,6 +40,7 @@ class SQLite:ContentProvider() {
             sUriMatcher.addURI(PROVIDER_NAME, "servers", SERVERS);
             sUriMatcher.addURI(PROVIDER_NAME, "server_id/#", SERVER_ID);
         }
+
 
         private var db: SQLiteDatabase? = null
 
@@ -78,14 +78,17 @@ class SQLite:ContentProvider() {
         val qb = SQLiteQueryBuilder();
         qb.tables = SERVERS_TABLE_NAME;
 
-        when (uriMatcher!!.match(p0)) {
-            SERVER_ID -> qb.appendWhere(_ID + "=" + p0.pathSegments[1])
+        println(p0);
+        when (sUriMatcher.match(p0)) {
+            SERVER_ID ->{
+                qb.appendWhere(_ID + "=" + p0.pathSegments[1])
+            }
             else -> {
-                null
+                println("no")
             }
         }
 
-        val sQLiteResolver = qb.query(db,null,null,null,null,null,null);
+        val sQLiteResolver = qb.query(db,null,p2,p3,null,null,null);
         sQLiteResolver.setNotificationUri(context!!.contentResolver, p0)
 
         return sQLiteResolver

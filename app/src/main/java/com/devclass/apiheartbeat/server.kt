@@ -8,14 +8,20 @@ import retrofit2.*
 import java.lang.Exception
 
 import android.content.ContentResolver;
+import android.content.ContentValues
 
 class Server(name:String,schema : String, url : String,port:String = "",endpoint:String = "",method:String = "GET") {
 
     companion object{
-            fun retrieveServers(): Array<Server>{
-                val URL = "content://com.devclass.apiheartbeat.SQLite";
+            fun retrieveServers(id:Int = 0): Array<Server>{
+
+
+                var URL = "content://com.devclass.apiheartbeat.SQLite/${if(id==0){"servers"}else{"server_id/${id}"}}";
                 val servers = Uri.parse(URL)
-                var SQLiteResolver = MainActivity.Resolver.query(servers, null, null, null,null)
+                var selection = ContentValues();
+                selection.put(SQLite._ID,1);
+                var SQLiteResolver = MainActivity.Resolver.query(servers, null,null ,
+                    null ,null)
                 var servers_list = arrayOf<Server>();
 
                 if(SQLiteResolver!=null){
