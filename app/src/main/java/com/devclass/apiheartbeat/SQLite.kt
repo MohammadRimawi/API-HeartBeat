@@ -78,12 +78,12 @@ class SQLite:ContentProvider() {
         val qb = SQLiteQueryBuilder();
         qb.tables = SERVERS_TABLE_NAME;
 
-//        when (uriMatcher!!.match(p0)) {
-//            SERVER_ID -> qb.appendWhere(_ID + "=" + p0.pathSegments[1])
-//            else -> {
-//                null
-//            }
-//        }
+        when (uriMatcher!!.match(p0)) {
+            SERVER_ID -> qb.appendWhere(_ID + "=" + p0.pathSegments[1])
+            else -> {
+                null
+            }
+        }
 
         val sQLiteResolver = qb.query(db,null,null,null,null,null,null);
         sQLiteResolver.setNotificationUri(context!!.contentResolver, p0)
