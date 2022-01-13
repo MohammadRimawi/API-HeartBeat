@@ -8,6 +8,9 @@ import java.net.HttpURLConnection
 import java.net.URL
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import okhttp3.ResponseBody
 import retrofit2.*
 import retrofit2.http.GET
@@ -65,6 +68,19 @@ class MainActivity : AppCompatActivity() {
 
         @POST("/{endpoint}")
         fun post(@Path("endpoint") endpoint : String ): Call<ResponseBody>;
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.top_bar_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.sync_all){
+            Toast.makeText(this, "Syncing all servers", Toast.LENGTH_SHORT).show()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }
