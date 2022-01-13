@@ -1,18 +1,27 @@
 package com.devclass.apiheartbeat
 
 import android.content.ContentValues
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 
 class ServerUpdateActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.server_update_activity)
-        val id = intent.getIntExtra("id",0);
+
+
+         val id = intent.getIntExtra("id",0);
+
         val server = Server.retrieveServers(id)[0];
         println(server.route())
 
@@ -54,5 +63,40 @@ class ServerUpdateActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext,"Server was not updated!",Toast.LENGTH_LONG).show();
             }
         }
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.server_update_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = intent.getIntExtra("id",0);
+
+        when(item.itemId){
+            R.id.ping_server -> {
+
+            }
+            R.id.delete_server ->{
+                val builder = AlertDialog.Builder(this@ServerUpdateActivity)
+                builder.setMessage("Are you sure you want to Delete?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes") { dialog, dialog_id ->
+                        Server.delete(id)
+                        Toast.makeText(applicationContext,"Server of ID: ${id} was Deleted!",Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                    .setNegativeButton("No") { dialog, dialog_id ->
+                        dialog.dismiss()
+                        Toast.makeText(applicationContext,"Server of ID: ${id} was not Deleted!",Toast.LENGTH_LONG).show();
+
+                    }
+                val alert = builder.create()
+                alert.show()
+//
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

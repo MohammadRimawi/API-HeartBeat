@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         Resolver = contentResolver;
 
         val intent = Intent(this, ServerUpdateActivity::class.java).apply {
-            putExtra("id", 5);
+            putExtra("id", 6);
         }
 
         startActivity(intent)
