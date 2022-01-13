@@ -34,7 +34,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Resolver = contentResolver;
 
+        val intent = Intent(this, ServerUpdateActivity::class.java).apply {
+            putExtra("id", 5);
+        }
 
+        startActivity(intent)
 
 //        Server.insert(Server(name="Secure CV",url = "rimawi.me",schema = "https",method = "GET"))
 //        Server.insert(Server(name="CV",url = "rimawi.me",schema = "http",method = "GET"))
@@ -46,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 //        vals.put(SQLite.NAME,"secure CV");
 //        Server.update(4,vals)
 
-        Server.pingAll()
+//        Server.pingAll()
 
     }
 

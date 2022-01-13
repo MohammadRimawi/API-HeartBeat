@@ -33,10 +33,12 @@ class Server(name:String,schema : String, url : String,port:String = "",endpoint
             )
         }
 
-        fun update(id :Int = 0,vals :ContentValues) {
+        fun update(id :Int = 0,vals :ContentValues) : Int{
             var URL = "content://com.devclass.apiheartbeat.SQLite/${if (id == 0) {"servers"} else {"server_id/${id}"}}";
             val servers = Uri.parse(URL)
             var SQLiteResolver = MainActivity.Resolver.update(servers, vals, null,null);
+
+            return SQLiteResolver;
         }
             fun delete(id :Int = 0) {
                 var URL = "content://com.devclass.apiheartbeat.SQLite/${if (id == 0) {"servers"} else {"server_id/${id}"}}";
