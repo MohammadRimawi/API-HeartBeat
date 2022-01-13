@@ -1,5 +1,8 @@
 package com.devclass.apiheartbeat
 
+import android.annotation.SuppressLint
+import android.content.ContentValues
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -8,6 +11,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
+import android.view.View
 import okhttp3.ResponseBody
 import retrofit2.*
 import retrofit2.http.GET
@@ -21,6 +25,40 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // create a list of server objects, specifying all required attributes to every server.
+
+        fun addServer(){
+            val values = ContentValues()
+            values.put(SQLite.NAME, "Varla");
+            values.put(SQLite.URL, "rimawi.me");
+            values.put(SQLite.SCEHMA, "http");
+            values.put(SQLite.PORT, "5050");
+            values.put(SQLite.ENDPOINT, "/api/get/pinned_todos");
+            values.put(SQLite.METHOD, "post");
+
+            val uri = contentResolver.insert(
+                SQLite.CONTENT_URL, values
+            )
+        }
+
+        @SuppressLint("Range")
+        fun retrieveServers(){
+
+            val URL = "content://com.devclass.apiheartbeat.SQLite";
+            val servers = Uri.parse(URL)
+            var SQLiteResolver = contentResolver.query(servers, null, null, null,null)
+
+            if(SQLiteResolver!=null){
+                if(SQLiteResolver?.moveToFirst()){
+                    do{
+                        println("*******************************")
+                        println(SQLiteResolver.getString(SQLiteResolver.getColumnIndex(SQLite.NAME)))
+                    }while (SQLiteResolver?.moveToNext());
+                }
+            }
+//            return arrayOf<Server>(Server(name = "My CV", schema = "http",url = "rimawi.me",method = "GET"));
+        }
+
+        retrieveServers()
 
         var servers = arrayOf<Server>(
                 Server(name = "My CV", schema = "http",url = "rimawi.me",method = "GET"),
