@@ -9,6 +9,9 @@ import java.lang.Exception
 
 import android.content.ContentResolver;
 import android.content.ContentValues
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 class Server(name:String,schema : String, url : String,port:String = "",endpoint:String = "",method:String = "GET") {
 
@@ -18,10 +21,7 @@ class Server(name:String,schema : String, url : String,port:String = "",endpoint
 
                 var URL = "content://com.devclass.apiheartbeat.SQLite/${if(id==0){"servers"}else{"server_id/${id}"}}";
                 val servers = Uri.parse(URL)
-                var selection = ContentValues();
-                selection.put(SQLite._ID,1);
-                var SQLiteResolver = MainActivity.Resolver.query(servers, null,null ,
-                    null ,null)
+                var SQLiteResolver = MainActivity.Resolver.query(servers, null,null , null ,null)
                 var servers_list = arrayOf<Server>();
 
                 if(SQLiteResolver!=null){
@@ -46,7 +46,7 @@ class Server(name:String,schema : String, url : String,port:String = "",endpoint
             for (server in servers) {
                 try {
                     val retro: Retrofit = Retrofit.Builder().baseUrl(server.BaseUrl()).build();
-                    val api: MainActivity.Api = retro.create();
+                    val api: Api = retro.create();
                     when(server.method){
                         "GET" -> api.get(server.endpoint).enqueue(object : Callback<ResponseBody> {
                             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -93,4 +93,12 @@ class Server(name:String,schema : String, url : String,port:String = "",endpoint
     }
 
 
+}
+
+interface Api{
+    @GET("/{endpoint}")
+    fun get(@Path("endpoint") endpoint : String ): Call<ResponseBody>;
+
+    @POST("/{endpoint}")
+    fun post(@Path("endpoint") endpoint : String ): Call<ResponseBody>;
 }
