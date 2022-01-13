@@ -23,6 +23,7 @@
         </activity>
 
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <service android:name=".PingService"/>
         <provider android:name="SQLite" android:authorities="com.devclass.apiheartbeat.SQLite"/>
 
     </application>
