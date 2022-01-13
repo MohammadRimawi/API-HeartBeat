@@ -20,14 +20,15 @@ import retrofit2.http.Path
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // create a list of server objects, specifying all required attributes to every server.
-
         fun addServer(){
+
             val values = ContentValues()
+
             values.put(SQLite.NAME, "Varla");
             values.put(SQLite.URL, "rimawi.me");
             values.put(SQLite.SCEHMA, "http");
@@ -40,31 +41,30 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        @SuppressLint("Range")
-        fun retrieveServers(){
-
+        fun retrieveServers(): Array<Server>{
             val URL = "content://com.devclass.apiheartbeat.SQLite";
             val servers = Uri.parse(URL)
             var SQLiteResolver = contentResolver.query(servers, null, null, null,null)
+            var servers_list = arrayOf<Server>();
 
             if(SQLiteResolver!=null){
                 if(SQLiteResolver?.moveToFirst()){
                     do{
-                        println("*******************************")
-                        println(SQLiteResolver.getString(SQLiteResolver.getColumnIndex(SQLite.NAME)))
+                        servers_list += arrayOf<Server>(Server(
+                            name = SQLiteResolver.getString(SQLiteResolver.getColumnIndex(SQLite.NAME) as Int),
+                            schema = SQLiteResolver.getString(SQLiteResolver.getColumnIndex(SQLite.SCEHMA) as Int),
+                            url = SQLiteResolver.getString(SQLiteResolver.getColumnIndex(SQLite.URL) as Int),
+                            method = SQLiteResolver.getString(SQLiteResolver.getColumnIndex(SQLite.METHOD) as Int),
+                            endpoint = SQLiteResolver.getString(SQLiteResolver.getColumnIndex(SQLite.ENDPOINT) as Int),
+                            port=SQLiteResolver.getString(SQLiteResolver.getColumnIndex(SQLite.PORT) as Int)
+                        ));
                     }while (SQLiteResolver?.moveToNext());
                 }
             }
-//            return arrayOf<Server>(Server(name = "My CV", schema = "http",url = "rimawi.me",method = "GET"));
+            return servers_list;
         }
 
-        retrieveServers()
-
-        var servers = arrayOf<Server>(
-                Server(name = "My CV", schema = "http",url = "rimawi.me",method = "GET"),
-                Server(name = "My CV secure", schema = "https",url = "rimawi.me",method = "GET"),
-                Server(name = "Varla", schema = "http",url = "rimawi.me",port = "5050",endpoint = "/api/get/pinned_todos",method = "POST")
-            );
+       var servers = retrieveServers()
 
         for (server in servers) {
             try {

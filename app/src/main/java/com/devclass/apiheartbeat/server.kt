@@ -1,6 +1,11 @@
 package com.devclass.apiheartbeat
 
-class Server(name:String,schema : String, url : String,port:String = "",endpoint:String = "",method:String = "GET") {
+import android.content.Context
+import android.net.Uri
+
+class Server(context: Context,name:String,schema : String, url : String,port:String = "",endpoint:String = "",method:String = "GET") {
+
+
 
     public val name = name;
     public val schema = schema;
@@ -17,4 +22,6 @@ class Server(name:String,schema : String, url : String,port:String = "",endpoint
     public fun route():String{
         return "[ ${method} ] - ${BaseUrl()}${endpoint}"
     }
+
+
 }

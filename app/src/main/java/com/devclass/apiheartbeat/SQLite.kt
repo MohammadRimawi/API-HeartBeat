@@ -11,6 +11,7 @@ import java.util.HashMap
 
 class SQLite:ContentProvider() {
     companion object{
+
         val PROVIDER_NAME = "com.devclass.apiheartbeat.SQLite";
         val prov_URL = "content://"+ PROVIDER_NAME + "/servers";
         val CONTENT_URL = Uri.parse(prov_URL);
@@ -40,7 +41,6 @@ class SQLite:ContentProvider() {
             sUriMatcher.addURI(PROVIDER_NAME, "servers", SERVERS);
             sUriMatcher.addURI(PROVIDER_NAME, "server_id/#", SERVER_ID);
         }
-
 
         private var db: SQLiteDatabase? = null
 
@@ -84,6 +84,7 @@ class SQLite:ContentProvider() {
 //                null
 //            }
 //        }
+
         val sQLiteResolver = qb.query(db,null,null,null,null,null,null);
         sQLiteResolver.setNotificationUri(context!!.contentResolver, p0)
 
