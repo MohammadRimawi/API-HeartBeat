@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteQueryBuilder
 import android.net.Uri
+import java.lang.Exception
 import java.util.HashMap
 
 class SQLite:ContentProvider() {
@@ -74,7 +75,6 @@ class SQLite:ContentProvider() {
         p3: Array<out String>?,
         p4: String?
     ): Cursor? {
-        println("####################### IN QUERY")
         val qb = SQLiteQueryBuilder();
         qb.tables = SERVERS_TABLE_NAME;
 
@@ -84,7 +84,7 @@ class SQLite:ContentProvider() {
                 qb.appendWhere(_ID + "=" + p0.pathSegments[1])
             }
             else -> {
-                println("no")
+              null
             }
         }
 
@@ -109,11 +109,45 @@ class SQLite:ContentProvider() {
     }
 
     override fun delete(p0: Uri, p1: String?, p2: Array<out String>?): Int {
-        TODO("Not yet implemented")
+        var number_of_rows =0;
+        when (sUriMatcher.match(p0)) {
+            SERVER_ID ->{
+                 number_of_rows = db!!.delete(SERVERS_TABLE_NAME, "_id= ?", Array(1){ p0.pathSegments[1] });
+                if (number_of_rows>0){
+                    println("********** DELETED ${p0.pathSegments[1]} ***********")
+                }
+                else{
+                    println("********** WAS NOT DELETED ${p0.pathSegments[1]} ***********")
+                }
+            }
+            else -> {
+                println("sho betsawi?")
+                null
+            }
+        }
+        context!!.contentResolver.notifyChange(p0, null)
+        return number_of_rows
     }
 
     override fun update(p0: Uri, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int {
-        TODO("Not yet implemented")
+        var number_of_rows =0;
+        when (sUriMatcher.match(p0)) {
+            SERVER_ID ->{
+                number_of_rows = db!!.update(SERVERS_TABLE_NAME,p1,"_id= ?", Array(1){ p0.pathSegments[1] });
+                if (number_of_rows>0){
+                    println("********** UPDATED ${p0.pathSegments[1]} ***********")
+                }
+                else{
+                    println("********** WAS NOT UPDATED ${p0.pathSegments[1]} ***********")
+                }
+            }
+            else -> {
+                println("sho betsawi?")
+                null
+            }
+        }
+        context!!.contentResolver.notifyChange(p0, null)
+        return number_of_rows
     }
 
 

@@ -17,6 +17,33 @@ class Server(name:String,schema : String, url : String,port:String = "",endpoint
 
     companion object{
 
+        fun insert(server:Server){
+
+            val values = ContentValues()
+
+            values.put(SQLite.NAME, server.name);
+            values.put(SQLite.URL, server.url);
+            values.put(SQLite.SCEHMA, server.schema);
+            values.put(SQLite.PORT, server.port);
+            values.put(SQLite.ENDPOINT, server.endpoint);
+            values.put(SQLite.METHOD, server.method);
+
+            val uri = MainActivity.Resolver.insert(
+                SQLite.CONTENT_URL, values
+            )
+        }
+
+        fun update(id :Int = 0,vals :ContentValues) {
+            var URL = "content://com.devclass.apiheartbeat.SQLite/${if (id == 0) {"servers"} else {"server_id/${id}"}}";
+            val servers = Uri.parse(URL)
+            var SQLiteResolver = MainActivity.Resolver.update(servers, vals, null,null);
+        }
+            fun delete(id :Int = 0) {
+                var URL = "content://com.devclass.apiheartbeat.SQLite/${if (id == 0) {"servers"} else {"server_id/${id}"}}";
+                val servers = Uri.parse(URL)
+                var SQLiteResolver = MainActivity.Resolver.delete(servers, null, null);
+            }
+
             fun retrieveServers(id:Int = 0): Array<Server>{
 
 

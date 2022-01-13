@@ -32,25 +32,15 @@ class MainActivity : AppCompatActivity() {
 
 
 
+//        Server.insert(Server(name="Secure CV",url = "rimawi.me",schema = "https",method = "GET"))
+//        Server.insert(Server(name="CV",url = "rimawi.me",schema = "http",method = "GET"))
+//        Server.insert(Server(name="CV",url = "rimawi.me",schema = "http",method = "POST",port = "5050",endpoint = "/api/get/pinned_todos"))
 
+//        Server.delete(3)
 
-        fun addServer(){
-
-            val values = ContentValues()
-
-            values.put(SQLite.NAME, "Varla");
-            values.put(SQLite.URL, "rimawi.me");
-            values.put(SQLite.SCEHMA, "http");
-            values.put(SQLite.PORT, "5050");
-            values.put(SQLite.ENDPOINT, "/api/get/pinned_todos");
-            values.put(SQLite.METHOD, "post");
-
-            val uri = contentResolver.insert(
-                SQLite.CONTENT_URL, values
-            )
-        }
-
-
+//        var vals = ContentValues();
+//        vals.put(SQLite.NAME,"secure CV");
+//        Server.update(4,vals)
 
         Server.pingAll()
 
