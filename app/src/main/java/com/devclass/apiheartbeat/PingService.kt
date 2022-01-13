@@ -12,7 +12,7 @@ class PingService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Toast.makeText(this,"Starting Ping Service",Toast.LENGTH_SHORT).show()
-
+        Server.pingAll()
         stopSelf();
         return super.onStartCommand(intent, flags, startId)
     }
