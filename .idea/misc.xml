@@ -7,7 +7,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_delete_forever_24.xml" value="0.2140625" />
         <entry key="app/src/main/res/drawable/ic_baseline_north_east_24.xml" value="0.2140625" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2140625" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17" />
         <entry key="app/src/main/res/layout/fragment_add_server.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/server_update_activity.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/menu/top_bar_menu.xml" value="0.19791666666666666" />
