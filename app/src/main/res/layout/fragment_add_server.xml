@@ -1,43 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ServerUpdateActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/activity_header"
+        android:id="@+id/AddingHeaderTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="Server with ID : 1"
+        android:text="Add a New Server"
         android:textSize="26sp"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <TableLayout
-        android:id="@+id/tableLayout3"
-        android:layout_width="409dp"
+        android:id="@+id/AddTableLayout"
+        android:layout_width="400dp"
 
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="228dp"
+        android:layout_marginBottom="20dp"
         android:padding="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_header">
+        app:layout_constraintTop_toBottomOf="@+id/AddingHeaderTV"
+        app:layout_constraintVertical_bias="0.5">
 
 
         <TableRow
-            android:gravity="center_horizontal"
             android:id="@+id/server_name_row"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/server_name_text_view"
@@ -66,10 +65,10 @@
         </TableRow>
 
         <TableRow
-            android:gravity="center_horizontal"
             android:id="@+id/server_url_row"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/server_url_text_view"
@@ -88,9 +87,9 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text=""
-                android:textSize="14sp"
-
                 android:textAlignment="viewStart"
+
+                android:textSize="14sp"
                 tools:layout_conversion_absoluteHeight="45dp"
                 tools:layout_conversion_absoluteWidth="199dp"
                 tools:layout_editor_absoluteX="59dp"
@@ -98,10 +97,10 @@
         </TableRow>
 
         <TableRow
-            android:gravity="center_horizontal"
             android:id="@+id/server_schema_row"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/server_schema_text_view"
@@ -119,10 +118,10 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:textSize="14sp"
-
                 android:text=""
+
                 android:textAlignment="viewStart"
+                android:textSize="14sp"
                 tools:layout_conversion_absoluteHeight="45dp"
                 tools:layout_conversion_absoluteWidth="199dp"
                 tools:layout_editor_absoluteX="59dp"
@@ -130,10 +129,10 @@
         </TableRow>
 
         <TableRow
-            android:gravity="center_horizontal"
             android:id="@+id/server_method_row"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/server_method_text_view"
@@ -151,10 +150,10 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:textSize="14sp"
-
                 android:text=""
+
                 android:textAlignment="viewStart"
+                android:textSize="14sp"
                 tools:layout_conversion_absoluteHeight="45dp"
                 tools:layout_conversion_absoluteWidth="199dp"
                 tools:layout_editor_absoluteX="59dp"
@@ -162,10 +161,10 @@
         </TableRow>
 
         <TableRow
-            android:gravity="center_horizontal"
             android:id="@+id/server_port_row"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/server_port_text_view"
@@ -182,17 +181,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:textSize="14sp"
+                android:inputType="number"
 
-                android:inputType="number" />
+                android:textSize="14sp" />
 
         </TableRow>
 
         <TableRow
-            android:gravity="center_horizontal"
             android:id="@+id/server_endpoint_row"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/server_endpoint_text_view"
@@ -211,10 +210,10 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:textSize="14sp"
-
                 android:text=""
+
                 android:textAlignment="viewStart"
+                android:textSize="14sp"
                 tools:layout_conversion_absoluteHeight="45dp"
                 tools:layout_conversion_absoluteWidth="199dp"
                 tools:layout_editor_absoluteX="59dp"
@@ -223,21 +222,19 @@
 
         <TableRow
 
-            android:id="@+id/sd"
+            android:id="@+id/add_button_row"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal">
 
 
             <Button
-                android:id="@+id/update_button"
+                android:id="@+id/add_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update" />
+                android:text="Add" />
 
         </TableRow>
 
     </TableLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

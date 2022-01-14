@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.fragment.app.DialogFragment
 import okhttp3.ResponseBody
 import retrofit2.*
 import retrofit2.http.GET
@@ -27,7 +29,7 @@ import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     companion object{
-        lateinit var Resolver :ContentResolver ;
+        lateinit var Resolver :ContentResolver
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         Server.pingAll()
     }
 
-    private fun displayServers() {
+    public fun displayServers() {
         var serverCursor = Server.getServersCursor()
         var from = listOf<String>("url","endpoint").toTypedArray()
         var to = intArrayOf(android.R.id.text1,android.R.id.text2)
@@ -78,6 +80,11 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.sync_all){
             startService(Intent(this,PingService::class.java));
+        }
+        if(item.itemId == R.id.add_server){
+            var dialog = AddServerFragment()
+            dialog.show(supportFragmentManager, "addDialog")
+
         }
         return super.onOptionsItemSelected(item)
     }
