@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ServerUpdateActivity">
+
+    <TextView
+        android:id="@+id/activity_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="Server with ID : 1"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/tableLayout3"
+        android:layout_width="409dp"
+
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="228dp"
+        android:padding="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_header">
+
+
+        <TableRow
+            android:gravity="center_horizontal"
+            android:id="@+id/server_name_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/server_name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name:"
+                tools:layout_conversion_absoluteHeight="19dp"
+                tools:layout_conversion_absoluteWidth="58dp"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="14dp" />
+
+            <EditText
+                android:id="@+id/server_name_text_input"
+                android:layout_width="233dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textAlignment="viewStart"
+                android:textSize="14sp"
+                tools:layout_conversion_absoluteHeight="45dp"
+                tools:layout_conversion_absoluteWidth="199dp"
+                tools:layout_editor_absoluteX="59dp"
+                tools:layout_editor_absoluteY="1dp" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:gravity="center_horizontal"
+            android:id="@+id/server_url_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/server_url_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="URL:"
+                tools:layout_conversion_absoluteHeight="19dp"
+                tools:layout_conversion_absoluteWidth="58dp"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="14dp" />
+
+            <EditText
+                android:id="@+id/server_url_text_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text=""
+                android:textSize="14sp"
+
+                android:textAlignment="viewStart"
+                tools:layout_conversion_absoluteHeight="45dp"
+                tools:layout_conversion_absoluteWidth="199dp"
+                tools:layout_editor_absoluteX="59dp"
+                tools:layout_editor_absoluteY="1dp" />
+        </TableRow>
+
+        <TableRow
+            android:gravity="center_horizontal"
+            android:id="@+id/server_schema_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/server_schema_text_view"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Schema:"
+                tools:layout_conversion_absoluteHeight="19dp"
+                tools:layout_conversion_absoluteWidth="58dp"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="14dp" />
+
+            <EditText
+                android:id="@+id/server_schema_text_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="14sp"
+
+                android:text=""
+                android:textAlignment="viewStart"
+                tools:layout_conversion_absoluteHeight="45dp"
+                tools:layout_conversion_absoluteWidth="199dp"
+                tools:layout_editor_absoluteX="59dp"
+                tools:layout_editor_absoluteY="1dp" />
+        </TableRow>
+
+        <TableRow
+            android:gravity="center_horizontal"
+            android:id="@+id/server_method_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/server_method_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Method:"
+                tools:layout_conversion_absoluteHeight="19dp"
+                tools:layout_conversion_absoluteWidth="58dp"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="14dp" />
+
+            <EditText
+                android:id="@+id/server_method_text_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="14sp"
+
+                android:text=""
+                android:textAlignment="viewStart"
+                tools:layout_conversion_absoluteHeight="45dp"
+                tools:layout_conversion_absoluteWidth="199dp"
+                tools:layout_editor_absoluteX="59dp"
+                tools:layout_editor_absoluteY="1dp" />
+        </TableRow>
+
+        <TableRow
+            android:gravity="center_horizontal"
+            android:id="@+id/server_port_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/server_port_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Port:"
+                tools:layout_conversion_absoluteHeight="19dp"
+                tools:layout_conversion_absoluteWidth="58dp"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="14dp" />
+
+            <EditText
+                android:id="@+id/server_port_text_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textSize="14sp"
+
+                android:inputType="number" />
+
+        </TableRow>
+
+        <TableRow
+            android:gravity="center_horizontal"
+            android:id="@+id/server_endpoint_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/server_endpoint_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Endpoint:"
+                tools:layout_conversion_absoluteHeight="19dp"
+                tools:layout_conversion_absoluteWidth="58dp"
+
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="14dp" />
+
+            <EditText
+                android:id="@+id/server_endpoint_text_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="14sp"
+
+                android:text=""
+                android:textAlignment="viewStart"
+                tools:layout_conversion_absoluteHeight="45dp"
+                tools:layout_conversion_absoluteWidth="199dp"
+                tools:layout_editor_absoluteX="59dp"
+                tools:layout_editor_absoluteY="1dp" />
+        </TableRow>
+
+        <TableRow
+
+            android:id="@+id/sd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+
+            <Button
+                android:id="@+id/update_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Update" />
+
+        </TableRow>
+
+    </TableLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

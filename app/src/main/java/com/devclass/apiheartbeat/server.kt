@@ -9,7 +9,6 @@ import java.lang.Exception
 
 import android.content.ContentResolver;
 import android.content.ContentValues
-import android.database.Cursor
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -17,6 +16,37 @@ import retrofit2.http.Path
 class Server(name:String,schema : String, url : String,port:String = "",endpoint:String = "",method:String = "GET") {
 
     companion object{
+
+        fun insert(server:Server){
+
+            val values = ContentValues()
+
+            values.put(SQLite.NAME, server.name);
+            values.put(SQLite.URL, server.url);
+            values.put(SQLite.SCEHMA, server.schema);
+            values.put(SQLite.PORT, server.port);
+            values.put(SQLite.ENDPOINT, server.endpoint);
+            values.put(SQLite.METHOD, server.method);
+
+            val uri = MainActivity.Resolver.insert(
+                SQLite.CONTENT_URL, values
+            )
+        }
+
+        fun update(id :Int = 0,vals :ContentValues) : Int{
+            var URL = "content://com.devclass.apiheartbeat.SQLite/${if (id == 0) {"servers"} else {"server_id/${id}"}}";
+            val servers = Uri.parse(URL)
+            var SQLiteResolver = MainActivity.Resolver.update(servers, vals, null,null);
+
+            return SQLiteResolver;
+        }
+            fun delete(id :Int = 0) {
+                var URL = "content://com.devclass.apiheartbeat.SQLite/${if (id == 0) {"servers"} else {"server_id/${id}"}}";
+                val servers = Uri.parse(URL)
+                var SQLiteResolver = MainActivity.Resolver.delete(servers, null, null);
+            }
+
+
             fun getServersCursor(id: Int = 0): Cursor? {
                 var URL = "content://com.devclass.apiheartbeat.SQLite/${if(id==0){"servers"}else{"server_id/${id}"}}";
                 val servers = Uri.parse(URL)

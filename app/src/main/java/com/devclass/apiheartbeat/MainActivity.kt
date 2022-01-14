@@ -8,6 +8,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
 import java.net.HttpURLConnection
 import java.net.URL
 import android.os.StrictMode
@@ -31,6 +33,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Resolver = contentResolver;
+
+        val intent = Intent(this, ServerUpdateActivity::class.java).apply {
+            putExtra("id", 6);
+        }
+
+        startActivity(intent)
+
+//        Server.insert(Server(name="Secure CV",url = "rimawi.me",schema = "https",method = "GET"))
+//        Server.insert(Server(name="CV",url = "rimawi.me",schema = "http",method = "GET"))
+//        Server.insert(Server(name="CV",url = "rimawi.me",schema = "http",method = "POST",port = "5050",endpoint = "/api/get/pinned_todos"))
+
+//        Server.delete(3)
+
+//        var vals = ContentValues();
+//        vals.put(SQLite.NAME,"secure CV");
+//        Server.update(4,vals)
+
+//        Server.pingAll()
         displayServers()
         var serversLV: ListView = findViewById(R.id.ServersLV)
         val adapter = serversLV.adapter
