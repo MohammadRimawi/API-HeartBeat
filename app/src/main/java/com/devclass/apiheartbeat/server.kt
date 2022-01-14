@@ -9,6 +9,7 @@ import java.lang.Exception
 
 import android.content.ContentResolver;
 import android.content.ContentValues
+import android.database.Cursor
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -16,13 +17,15 @@ import retrofit2.http.Path
 class Server(name:String,schema : String, url : String,port:String = "",endpoint:String = "",method:String = "GET") {
 
     companion object{
-
-            fun retrieveServers(id:Int = 0): Array<Server>{
-
-
+            fun getServersCursor(id: Int = 0): Cursor? {
                 var URL = "content://com.devclass.apiheartbeat.SQLite/${if(id==0){"servers"}else{"server_id/${id}"}}";
                 val servers = Uri.parse(URL)
                 var SQLiteResolver = MainActivity.Resolver.query(servers, null,null , null ,null)
+                return SQLiteResolver;
+            }
+            fun retrieveServers(id:Int = 0): Array<Server>{
+
+                var SQLiteResolver = getServersCursor(id)
                 var servers_list = arrayOf<Server>();
 
                 if(SQLiteResolver!=null){

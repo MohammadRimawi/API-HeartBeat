@@ -8,8 +8,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import java.net.HttpURLConnection
 import java.net.URL
 import android.os.StrictMode
@@ -17,7 +15,7 @@ import android.os.StrictMode.ThreadPolicy
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import android.widget.*
 import okhttp3.ResponseBody
 import retrofit2.*
 import retrofit2.http.GET
@@ -33,30 +31,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Resolver = contentResolver;
-
-
-
-
-
-        fun addServer(){
-
-            val values = ContentValues()
-
-            values.put(SQLite.NAME, "Varla");
-            values.put(SQLite.URL, "rimawi.me");
-            values.put(SQLite.SCEHMA, "http");
-            values.put(SQLite.PORT, "5050");
-            values.put(SQLite.ENDPOINT, "/api/get/pinned_todos");
-            values.put(SQLite.METHOD, "post");
-
-            val uri = contentResolver.insert(
-                SQLite.CONTENT_URL, values
-            )
+        displayServers()
+        var serversLV: ListView = findViewById(R.id.ServersLV)
+        val adapter = serversLV.adapter
+        serversLV.setOnItemClickListener { parent, view, position, id ->
+//            val intent = Intent(this,)
         }
-
-
         Server.pingAll()
+    }
 
+    private fun displayServers() {
+        var serverCursor = Server.getServersCursor()
+        var from = listOf<String>("url","endpoint").toTypedArray()
+        var to = intArrayOf(android.R.id.text1,android.R.id.text2)
+        var adapter = SimpleCursorAdapter(this,android.R.layout.simple_list_item_2,
+                                        serverCursor, from, to, 0 )
+        var serversLV: ListView = findViewById(R.id.ServersLV)
+        serversLV.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
