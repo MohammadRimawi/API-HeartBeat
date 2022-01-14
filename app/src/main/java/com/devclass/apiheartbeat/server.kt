@@ -1,23 +1,40 @@
 package com.devclass.apiheartbeat
 
-import android.app.Application
 import android.content.Context
 import android.net.Uri
 import okhttp3.ResponseBody
 import retrofit2.*
 import java.lang.Exception
 
-import android.content.ContentResolver;
 import android.content.ContentValues
 import android.database.Cursor
+import android.opengl.Visibility
+import android.view.View
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+//import android.R
+import com.devclass.apiheartbeat.R
 
-class Server(name:String,schema : String, url : String,port:String = "",endpoint:String = "",method:String = "GET") {
+import android.widget.TextView
+
+import android.view.LayoutInflater
+
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import com.devclass.apiheartbeat.MainActivity.Companion.displayServers
+import com.devclass.apiheartbeat.MainActivity.Companion.main_context
+
+
+class Server(name:String,schema : String, url : String,port:String = "",endpoint:String = "",method:String = "GET",_id:Int=-1) {
 
     companion object{
+        var servers = arrayOf<Server>();
 
+        fun reload(){
+            servers = retrieveServers();
+        }
         fun insert(server:Server){
 
             val values = ContentValues()
@@ -57,12 +74,14 @@ class Server(name:String,schema : String, url : String,port:String = "",endpoint
             fun retrieveServers(id:Int = 0): Array<Server>{
 
                 var SQLiteResolver = getServersCursor(id)
+
                 var servers_list = arrayOf<Server>();
 
                 if(SQLiteResolver!=null){
                     if(SQLiteResolver?.moveToFirst()){
                         do{
                             servers_list += arrayOf<Server>(Server(
+                                _id = SQLiteResolver.getString(SQLiteResolver.getColumnIndex(SQLite._ID) as Int).toInt(),
                                 name = SQLiteResolver.getString(SQLiteResolver.getColumnIndex(SQLite.NAME) as Int),
                                 schema = SQLiteResolver.getString(SQLiteResolver.getColumnIndex(SQLite.SCEHMA) as Int),
                                 url = SQLiteResolver.getString(SQLiteResolver.getColumnIndex(SQLite.URL) as Int),
@@ -77,10 +96,14 @@ class Server(name:String,schema : String, url : String,port:String = "",endpoint
         }
 
         fun pingAll(){
-            val servers = retrieveServers();
-            for (server in servers) {
+            if(Server.servers.size==0){
+                Server.servers = Server.retrieveServers();
+            }
+
+            for (server in servers){
                 try {
-                    pingOne(server);
+                     pingOne(server);
+
                 }
                 catch(e: Exception){
                     println(server.route() + " Was not sent ")
@@ -88,39 +111,69 @@ class Server(name:String,schema : String, url : String,port:String = "",endpoint
             }
 
         }
-        private fun pingOne(server:Server){
-            val retro: Retrofit = Retrofit.Builder().baseUrl(server.BaseUrl()).build();
-            val api: Api = retro.create();
-            when(server.method){
-                "GET" -> api.get(server.endpoint).enqueue(object : Callback<ResponseBody> {
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+        fun pingOne(server:Server,toast :Boolean = false) {
 
-//                        t.printStackTrace()
-                        throw(t);
+            try{
+                val retro: Retrofit = Retrofit.Builder().baseUrl(server.BaseUrl()).build();
+                val api: Api = retro.create();
+                 when(server.method){
+                    "GET" -> {
+                        api.get(server.endpoint).enqueue(object : Callback<ResponseBody> {
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            server.status = "REST in peace"
+                            println(server.route() + " Was not sent ")
+                            t.printStackTrace()
+                            if(toast){
+                                Toast.makeText(main_context,"REST in peace!",Toast.LENGTH_LONG).show();
+                            }
+                            displayServers()
+                        }
+                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                            println(response.code().toString() + " - " + server.route() )
+                            server.status =  response.code().toString();
+                            if(toast){
+                                Toast.makeText(main_context,response.code().toString(),Toast.LENGTH_LONG).show();
+                            }
+                            displayServers()
+                        }
+                    });
                     }
-                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                        println(response.code().toString() + " - " + server.route() )
-                    }
-                });
-                "POST" -> api.post(server.endpoint).enqueue(object :
-                    Callback<ResponseBody> {
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        println(server.route() + " Was not sent ")
-                        t.printStackTrace()
-                    }
-                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                        println(response.code().toString() + " - " + server.route() )
-                    }
-                });
+                    "POST" -> api.post(server.endpoint).enqueue(object :
+                        Callback<ResponseBody> {
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            server.status = "REST in peace"
+                            println(server.route() + " Was not sent ")
+                            t.printStackTrace()
+                            if(toast){
+                                Toast.makeText(main_context,"REST in peace",Toast.LENGTH_LONG).show();
+                            }
+                            displayServers()
+                        }
+                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                            println(response.code().toString() + " - " + server.route() )
+                            server.status =  response.code().toString();
+                            if(toast){
+                                Toast.makeText(main_context,response.code().toString(),Toast.LENGTH_LONG).show();
+                            }
+                            displayServers()
+                        }
+                    });
+                }
             }
+            catch (e:Exception){
+                e.printStackTrace()
+            }
+
         }
     }
+    public val _id = _id;
     public val name = name;
     public val schema = schema;
     public val url = url
     public val port = port;
     public val endpoint = endpoint;
     public val method = method.uppercase();
+    public var status = "";
 
 
     public fun BaseUrl():String{
@@ -132,6 +185,59 @@ class Server(name:String,schema : String, url : String,port:String = "",endpoint
     }
 
 
+
+}
+
+class ServerAdapter(context: Context?, servers: Array<Server>)  : ArrayAdapter<Server>(main_context, 0, servers) {
+
+
+
+   override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+
+        var convertView = convertView
+        val server: Server = Server.servers[position];
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.list_view_with_status, parent, false)
+        }
+
+
+        val schema: TextView = convertView!!.findViewById(R.id.schema)
+        val url: TextView = convertView!!.findViewById(R.id.url)
+        val server_name: TextView = convertView!!.findViewById(R.id.server)
+        val endpoint: TextView = convertView!!.findViewById(R.id.endpoint)
+       val endpoint_title: TextView = convertView!!.findViewById(R.id.endpoint_title)
+       val port: TextView = convertView!!.findViewById(R.id.port)
+       val port_title: TextView = convertView!!.findViewById(R.id.port_title)
+        val status : TextView = convertView!!.findViewById(R.id.status);
+        val method : TextView = convertView!!.findViewById(R.id.method);
+
+
+       if (server.endpoint == ""){
+           endpoint_title.setVisibility(View.GONE);
+           endpoint.setVisibility(View.GONE);
+       }
+       else{
+           endpoint.setText(server.endpoint);
+       }
+
+
+       if (server.port == ""){
+           port_title.setVisibility(View.GONE);
+           port.setVisibility(View.GONE);
+       }
+       else{
+           port.setText(server.port);
+       }
+
+        schema.setText(server.schema);
+        url.setText(server.url);
+        server_name.setText(server.name);
+
+        status.setText(server.status);
+        method.setText(server.method);
+
+        return convertView
+    }
 }
 
 interface Api{

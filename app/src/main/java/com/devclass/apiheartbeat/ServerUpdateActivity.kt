@@ -1,6 +1,7 @@
 package com.devclass.apiheartbeat
 
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,15 +15,14 @@ import androidx.appcompat.app.AlertDialog
 
 class ServerUpdateActivity : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.server_update_activity)
 
 
-         val id = intent.getIntExtra("id", 0);
+         val position = intent.getIntExtra("position", 0);
 
-        val server = Server.retrieveServers(id)[0];
+        val server = Server.servers[position];
         println(server.route())
 
         val activity_header : TextView = findViewById(R.id.activity_header);
@@ -36,7 +36,8 @@ class ServerUpdateActivity : AppCompatActivity() {
 
         val upload_button : Button = findViewById(R.id.update_button);
 
-        activity_header.text = "Server of ID: ${id}"
+        activity_header.text = "Server of ID: ${server._id}";
+
 
         name_text_box.setText(server.name);
         url_text_box.setText(server.url);
@@ -54,8 +55,10 @@ class ServerUpdateActivity : AppCompatActivity() {
             values.put(SQLite.PORT,port_text_box.text.toString());
             values.put(SQLite.ENDPOINT,endpoint_text_box.text.toString());
 
-            if(Server.update(id,values)> 0){
+            if(Server.update(server._id,values)> 0){
                 Toast.makeText(applicationContext,"Server was updated!",Toast.LENGTH_LONG).show();
+                Server.reload();
+                MainActivity.displayServers()
                 finish();
 
             }
@@ -72,9 +75,10 @@ class ServerUpdateActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = intent.getIntExtra("id",0);
-
+        val position = intent.getIntExtra("position",-1);
         when(item.itemId){
             R.id.ping_server -> {
+                Server.pingOne(Server.servers[position],toast = true)
 
             }
             R.id.delete_server ->{
@@ -84,6 +88,8 @@ class ServerUpdateActivity : AppCompatActivity() {
                     .setPositiveButton("Yes") { dialog, dialog_id ->
                         Server.delete(id)
                         Toast.makeText(applicationContext,"Server of ID: ${id} was Deleted!",Toast.LENGTH_LONG).show();
+                        Server.reload();
+                        MainActivity.displayServers()
                         finish();
                     }
                     .setNegativeButton("No") { dialog, dialog_id ->

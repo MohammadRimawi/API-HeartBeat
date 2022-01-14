@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import com.devclass.apiheartbeat.MainActivity.Companion.displayServers
 
 class AddServerFragment : DialogFragment(){
     override fun onCreateView(
@@ -35,7 +36,8 @@ class AddServerFragment : DialogFragment(){
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        (activity as MainActivity).displayServers()
+        Server.reload();
+        displayServers()
         super.onDismiss(dialog)
     }
 }

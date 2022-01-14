@@ -25,8 +25,6 @@ class SQLite:ContentProvider() {
         val PORT = "port";
         val ENDPOINT = "endpoint";
 
-        private val SERVER_PROJECTION_MAP: HashMap<String, String>? = null;
-
         val SERVERS = 1;
         val SERVER_ID = 2;
 
@@ -113,15 +111,8 @@ class SQLite:ContentProvider() {
         when (sUriMatcher.match(p0)) {
             SERVER_ID ->{
                  number_of_rows = db!!.delete(SERVERS_TABLE_NAME, "_id= ?", Array(1){ p0.pathSegments[1] });
-                if (number_of_rows>0){
-                    println("********** DELETED ${p0.pathSegments[1]} ***********")
-                }
-                else{
-                    println("********** WAS NOT DELETED ${p0.pathSegments[1]} ***********")
-                }
             }
             else -> {
-                println("sho betsawi?")
                 null
             }
         }
@@ -135,14 +126,11 @@ class SQLite:ContentProvider() {
             SERVER_ID ->{
                 number_of_rows = db!!.update(SERVERS_TABLE_NAME,p1,"_id= ?", Array(1){ p0.pathSegments[1] });
                 if (number_of_rows>0){
-                    println("********** UPDATED ${p0.pathSegments[1]} ***********")
                 }
                 else{
-                    println("********** WAS NOT UPDATED ${p0.pathSegments[1]} ***********")
                 }
             }
             else -> {
-                println("sho betsawi?")
                 null
             }
         }
