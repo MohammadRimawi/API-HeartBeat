@@ -20,7 +20,7 @@ class ServerUpdateActivity : AppCompatActivity() {
         setContentView(R.layout.server_update_activity)
 
 
-         val id = intent.getIntExtra("id",0);
+         val id = intent.getIntExtra("id", 0);
 
         val server = Server.retrieveServers(id)[0];
         println(server.route())

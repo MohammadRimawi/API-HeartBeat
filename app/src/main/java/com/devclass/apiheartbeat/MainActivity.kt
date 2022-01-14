@@ -53,9 +53,9 @@ class MainActivity : AppCompatActivity() {
         var serversLV: ListView = findViewById(R.id.ServersLV)
         val adapter = serversLV.adapter
         serversLV.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(this, ServerUpdateActivity::class.java).apply {
-                putExtra("id", id);
-            }
+            var intent = Intent(this, ServerUpdateActivity::class.java)
+            intent.putExtra("id", id.toInt());
+
             startActivity(intent)
         }
         Server.pingAll()
